@@ -1,0 +1,33 @@
+services:
+
+  postgres:
+    image: kartoza/postgis:17-3.5
+    container_name: postgis
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_db:/var/lib/postgresql
+    environment:
+      - POSTGRES_DB=gis
+      - POSTGRES_USER=docker
+      - POSTGRES_PASS=docker
+      - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology,postgis_raster,pgrouting
+
+  pgadmin:
+    image: dpage/pgadmin4:9.3.0
+    container_name: my_pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - 5050:80
+    depends_on:
+      - postgres
+    volumes:
+      - pg4_db:/var/lib/pgadmin
+
+volumes:
+   pg_db:
+   pg4_db:
