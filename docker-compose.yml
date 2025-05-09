@@ -9,9 +9,9 @@ services:
     volumes:
       - pg_db:/var/lib/postgresql
     environment:
-      - POSTGRES_DB=gis
-      - POSTGRES_USER=docker
-      - POSTGRES_PASS=docker
+      - POSTGRES_DB=mappy_db
+      - POSTGRES_USER=mappyadmin
+      - POSTGRES_PASS=mappypassword
       - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology,postgis_raster,pgrouting
 
   pgadmin:
