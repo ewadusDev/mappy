@@ -2,7 +2,7 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { db } from "@/db"
 import { Client } from 'pg';
-import { users } from "@/db/schema"
+import { plans, users, attachments } from "@/db/schema"
 
 export const testDBConnection = async () => {
 
@@ -18,7 +18,7 @@ export const testDBConnection = async () => {
 }
 
 
-export const reseedDatabase = async () => {
+export const reseedUsersTable = async () => {
     const client = new Client({
         connectionString: process.env.DATABASE_URL,
     });
@@ -52,11 +52,87 @@ export const reseedDatabase = async () => {
         ])
 
         await client.end()
-
-        console.log("Seed data successfully")
+        console.log("Seed users table successfully")
 
     } catch (error) {
         console.error("Re-seed Database error", error)
     }
 
+}
+
+
+export const reseedPlansTable = async () => {
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+    });
+
+    try {
+        await client.connect();
+        const db = drizzle(client);
+
+        // Drop table if exists
+        await db.execute(`DROP TABLE IF EXISTS plans CASCADE;`);
+       // Drop enum if exists
+        await db.execute(`DROP TYPE IF EXISTS type_geom;`)
+
+        // Recreate table
+        await db.execute(`
+            CREATE TYPE type_geom AS ENUM ('POINT', 'LINE', 'POLYGON');
+
+            CREATE TABLE plans (
+                 id SERIAL PRIMARY KEY,
+                 title VARCHAR(100) NOT NULL,
+                 type type_geom NOT NULL,
+                 geom GEOMETRY,
+                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+            `);
+
+        //  Insert new data
+        await db.insert(plans).values([{
+            title: "test plan a1",
+            type: "POINT",
+        }])
+        console.log("Seed plans table successfully")
+    } catch (error) {
+        console.error(error)
+    }
+
+}
+
+export const reseedAttachmentsTable = async () => {
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+    });
+
+    try {
+        await client.connect();
+        const db = drizzle(client);
+
+        // Drop table if exists
+        await db.execute(`DROP TABLE IF EXISTS attachments CASCADE;`);
+
+          // Drop enum if exists
+          await db.execute(`DROP TYPE IF EXISTS type_file;`)
+
+        // Recreate table
+        await db.execute(`
+            CREATE TYPE type_file AS ENUM ('JPG', 'PNG', 'GEOTIFF');
+
+            CREATE TABLE attachments (
+                 id SERIAL PRIMARY KEY,
+                 file_url TEXT,
+                 type type_file NOT NULL,
+                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+            `);
+
+        //  Insert new data
+        await db.insert(attachments).values([{
+            file_url: "/images/test.jpg",
+            type: "JPG",
+        }])
+        console.log("Seed attachments table successfully")
+
+    } catch (error) {
+        console.error(error)
+    }
 }

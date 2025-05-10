@@ -37,6 +37,6 @@ export const plans = pgTable('plans', {
 export const attachments = pgTable('attachments', {
     id: serial('id').primaryKey(),
     file_url: text('file_url'),
-    type: attachmentEnum('type'),
+    type: attachmentEnum('type').notNull(),
     createdAt: timestamp('created_at').defaultNow()
 })
