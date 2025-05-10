@@ -1,8 +1,12 @@
+import LeftNavbar from "@/components/leftnav/LeftNavbar";
+
+
+
 export default async function Home() {
 
   return (
-    <main>
-      Hello world!
-    </main>
+    <>
+      <LeftNavbar />
+    </>
   );
 }
