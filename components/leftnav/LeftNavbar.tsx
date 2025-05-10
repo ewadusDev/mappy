@@ -10,7 +10,9 @@ const LeftNavbar = () => {
         <div className="p-2.5 flex flex-col justify-between h-full">
             <div className="flex items-center justify-between">
                 <h1 className="text-6xl font-bold">Mappy</h1>
-                <Image src={"/leftnav/mappy_logo.webp"} alt="logo" width={400} height={400} className="w-20 h-20 object-cover" />
+                <div className="w-20 h-20 object-cover">
+                    <Image src={"/leftnav/mappy_logo.webp"} alt="logo" width={400} height={400}/>
+                </div>
             </div>
 
             <h6 className="text-3xl">Your map</h6>
