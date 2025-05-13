@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic';
 
 
 // Dynamically import the MapLandmark component with SSR disabled
-const BaseMapContainer = dynamic(() => import('./MapDisplay'), {
+const BaseMapContent = dynamic(() => import('./MapContent'), {
     ssr: false,
 });
 
-export default BaseMapContainer;
+export default BaseMapContent;

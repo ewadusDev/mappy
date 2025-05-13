@@ -3,6 +3,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { db } from "@/db"
 import { Client } from 'pg';
 import { plans, users, attachments } from "@/db/schema"
+import { State } from '@/types/action';
 
 export const testDBConnection = async () => {
 
@@ -16,7 +17,6 @@ export const testDBConnection = async () => {
     }
 
 }
-
 
 export const reseedUsersTable = async () => {
     const client = new Client({
@@ -60,7 +60,6 @@ export const reseedUsersTable = async () => {
 
 }
 
-
 export const reseedPlansTable = async () => {
     const client = new Client({
         connectionString: process.env.DATABASE_URL,
@@ -72,7 +71,7 @@ export const reseedPlansTable = async () => {
 
         // Drop table if exists
         await db.execute(`DROP TABLE IF EXISTS plans CASCADE;`);
-       // Drop enum if exists
+        // Drop enum if exists
         await db.execute(`DROP TYPE IF EXISTS type_geom;`)
 
         // Recreate table
@@ -111,8 +110,8 @@ export const reseedAttachmentsTable = async () => {
         // Drop table if exists
         await db.execute(`DROP TABLE IF EXISTS attachments CASCADE;`);
 
-          // Drop enum if exists
-          await db.execute(`DROP TYPE IF EXISTS type_file;`)
+        // Drop enum if exists
+        await db.execute(`DROP TYPE IF EXISTS type_file;`)
 
         // Recreate table
         await db.execute(`
@@ -135,4 +134,34 @@ export const reseedAttachmentsTable = async () => {
     } catch (error) {
         console.error(error)
     }
+}
+
+
+export const savePlan = async (prevState: State, formData: FormData) => {
+    const data = Object.fromEntries(formData)
+    console.log(data)
+
+
+    const { name, image, plan } = data
+
+
+
+    if (!name || !plan) {
+        return {
+            errors: {
+                name,
+                image,
+                plan
+            },
+            message: "Invalid data"
+        }
+    }
+
+    return {
+        errors: {},
+        message: "Success"
+    }
+
+
+
 }
