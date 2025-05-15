@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, timestamp, text, pgEnum, customType } from 'drizzle-orm/pg-core'
+import { pgTable, serial, varchar, timestamp, text, pgEnum, customType, integer } from 'drizzle-orm/pg-core'
 
 
 export const planEnum = pgEnum('type', ['POINT', 'LINE', 'POLYGON']);
@@ -32,11 +32,13 @@ export const plans = pgTable('plans', {
     type: planEnum('type').notNull(),
     geom: geometry('geom'),
     createdAt: timestamp('created_at').defaultNow(),
+    userId: integer('user_id').references(() => users.id)
 })
 
 export const attachments = pgTable('attachments', {
     id: serial('id').primaryKey(),
     file_url: text('file_url'),
     type: attachmentEnum('type').notNull(),
-    createdAt: timestamp('created_at').defaultNow()
+    createdAt: timestamp('created_at').defaultNow(),
+    planId: integer('plan_id').references(() => plans.id),
 })

@@ -1,10 +1,11 @@
 "use client"
 import { MapContainer, TileLayer, FeatureGroup } from 'react-leaflet'
 import { EditControl } from "react-leaflet-draw"
-import { useEffect, useRef, useState } from 'react';
-import L, { latLng, polyline } from "leaflet"
+import { useContext, useEffect, useRef, useState } from 'react';
+import L from "leaflet"
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw/dist/leaflet.draw.css';
+import { MapContext } from '@/app/page';
 
 
 
@@ -63,19 +64,43 @@ const drawOption = {
 }
 
 const MapContent = () => {
+    const { setFeature, isPlanCreated, setIsPlanCreated } = useContext(MapContext)
     const [center, setCenter] = useState<[number, number]>([13.815, 100.559])
-    const [feature, setFeature] = useState<{ feature_id: string, latLng: [], type: string } | null>(null)
-    const [isDrawn, setIsDrawn] = useState(false)
+    const featureGroupRef = useRef(null);
+
+    useEffect(() => {
+        const layerFeature = featureGroupRef.current
+
+        if (isPlanCreated) {
+            // Shape ของ polygon
+            if (layerFeature) {
+                layerFeature.clearLayers()
+                setFeature(null)
+                setIsPlanCreated(false)
+                return
+            }
+        }
+
+
+    }, [isPlanCreated])
 
     const _onCreated = (e: L.DrawEvents.Created) => {
         const { layerType, layer } = e
+
         if (layerType === 'polygon') {
-            setFeature({ feature_id: layer._leaflet_id, latLng: layer._latlngs, type: layerType })
-            setIsDrawn(true)
+            const geoJson = layer.toGeoJSON()
+            setFeature(
+                {
+                    feature_id: layer._leaflet_id,
+                    latLng: JSON.stringify(geoJson.geometry),
+                    type: layerType.toUpperCase()
+                })
             return
         }
 
     }
+
+
 
     const _onEdited = (e: L.DrawEvents.Edited) => {
         const { layers: { _layers } } = e
@@ -91,7 +116,7 @@ const MapContent = () => {
     return (
         <MapContainer center={center} zoom={14} className='h-[100vh] w-full z-2'>
 
-            <FeatureGroup>
+            <FeatureGroup ref={featureGroupRef}>
                 <EditControl
                     {...drawOption}
                     onCreated={_onCreated}

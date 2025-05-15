@@ -1,12 +1,13 @@
 "use server"
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { db } from "@/db"
+import { db, minioClient } from "@/db/dbconnection"
 import { Client } from 'pg';
 import { plans, users, attachments } from "@/db/schema"
 import { State } from '@/types/action';
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 export const testDBConnection = async () => {
-
 
     try {
         const response = await db.select().from(users)
@@ -83,6 +84,7 @@ export const reseedPlansTable = async () => {
                  title VARCHAR(100) NOT NULL,
                  type type_geom NOT NULL,
                  geom GEOMETRY,
+                 user_id INTEGER REFERENCES users(id),
                  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
             `);
 
@@ -121,7 +123,9 @@ export const reseedAttachmentsTable = async () => {
                  id SERIAL PRIMARY KEY,
                  file_url TEXT,
                  type type_file NOT NULL,
-                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+                 plan_id INTEGER REFERENCES plans(id)
+                 );
             `);
 
         //  Insert new data
@@ -139,12 +143,7 @@ export const reseedAttachmentsTable = async () => {
 
 export const savePlan = async (prevState: State, formData: FormData) => {
     const data = Object.fromEntries(formData)
-    console.log(data)
-
-
     const { name, image, plan } = data
-
-
 
     if (!name || !plan) {
         return {
@@ -153,15 +152,52 @@ export const savePlan = async (prevState: State, formData: FormData) => {
                 image,
                 plan
             },
-            message: "Invalid data"
+            message: "Invalid data [front-end]"
         }
     }
 
-    return {
-        errors: {},
-        message: "Success"
+    try {
+
+        const response = await axios.post("http://localhost:3000/api/createplan",
+            { data }
+        )
+        console.log("Action Server", response)
+
+        return {
+            errors: {},
+            message: "Successful"
+        }
+
+    } catch (error) {
+        console.log(error)
+        return {
+            errors: { error },
+            message: "Unsuccessful"
+        }
+
     }
 
 
 
+}
+
+
+export const reseedMinioBucket = async () => {
+    const exists = await minioClient.bucketExists(process.env.MINIO_BUCKETNAME)
+    const originalFile = "public/righnav/road_img.jpg"
+    const objectFileName = uuidv4() + ".jpg"
+
+    if (!exists) {
+        await minioClient.makeBucket(process.env.MINIO_BUCKETNAME)
+        console.log("Bucket was created")
+    } else {
+        console.log("Bucket already exists")
+    }
+
+    try {
+        await minioClient.fPutObject(process.env.MINIO_BUCKETNAME, objectFileName, originalFile)
+        console.log("upload successfully")
+    } catch (error) {
+        console.log("upload file", error)
+    }
 }

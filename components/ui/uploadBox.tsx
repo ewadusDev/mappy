@@ -5,8 +5,7 @@ import { CiCamera } from "react-icons/ci";
 
 
 
-export default function UploadBox({ image }: { image?: string }) {
-    const fileInputRef = useRef<HTMLInputElement>(null)
+export default function UploadBox({ image, fileInputRef }: { image?: string, fileInputRef: React.RefObject<HTMLInputElement> | null }) {
     const [preview, setPreview] = useState<string | null>(null)
 
 
@@ -21,7 +20,7 @@ export default function UploadBox({ image }: { image?: string }) {
 
     const handleFileChange = async () => {
         const file = fileInputRef.current?.files?.[0]
-        if (!file) return console.log("not found image file")
+        if (!file) throw Error("not found image file")
         setPreview(URL.createObjectURL(file))
     }
 
