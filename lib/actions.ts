@@ -3,12 +3,9 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { db, minioClient } from "@/db/dbconnection"
 import { Client } from 'pg';
 import { plans, users, attachments } from "@/db/schema"
-import { State } from '@/types/action';
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
 
 export const testDBConnection = async () => {
-
     try {
         const response = await db.select().from(users)
         console.log("Connected DB", response)
@@ -16,7 +13,6 @@ export const testDBConnection = async () => {
     } catch (error) {
         console.log("Unable to connect database", error)
     }
-
 }
 
 export const reseedUsersTable = async () => {
@@ -74,7 +70,6 @@ export const reseedPlansTable = async () => {
         await db.execute(`DROP TABLE IF EXISTS plans CASCADE;`);
         // Drop enum if exists
         await db.execute(`DROP TYPE IF EXISTS type_geom;`)
-
         // Recreate table
         await db.execute(`
             CREATE TYPE type_geom AS ENUM ('POINT', 'LINE', 'POLYGON');
@@ -139,48 +134,6 @@ export const reseedAttachmentsTable = async () => {
         console.error(error)
     }
 }
-
-
-export const savePlan = async (prevState: State, formData: FormData) => {
-    const data = Object.fromEntries(formData)
-    const { name, image, plan } = data
-
-    if (!name || !plan) {
-        return {
-            errors: {
-                name,
-                image,
-                plan
-            },
-            message: "Invalid data [front-end]"
-        }
-    }
-
-    try {
-
-        const response = await axios.post("http://localhost:3000/api/createplan",
-            { data }
-        )
-        console.log("Action Server", response)
-
-        return {
-            errors: {},
-            message: "Successful"
-        }
-
-    } catch (error) {
-        console.log(error)
-        return {
-            errors: { error },
-            message: "Unsuccessful"
-        }
-
-    }
-
-
-
-}
-
 
 export const reseedMinioBucket = async () => {
     const exists = await minioClient.bucketExists(process.env.MINIO_BUCKETNAME)

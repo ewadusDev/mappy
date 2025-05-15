@@ -1,27 +1,14 @@
 "use client"
-import React, { useActionState, useEffect, useContext, useRef } from "react";
+import React, { useActionState, useEffect, useContext, useRef, useState } from "react";
 import UploadBox from "../ui/uploadBox";
-import { savePlan } from "@/lib/actions";
-import { State } from "@/types/action"
 import { MapContext } from "@/app/page";
 import axios from "axios";
 
 
 
 const CreatePlan = () => {
-
-    const initialState: State = { errors: {}, message: "" }
-    const [state, formAction, loading] = useActionState(savePlan, initialState)
     const { feature, setFeature, setIsPlanCreated } = useContext(MapContext)
     const fileInputRef = useRef<HTMLInputElement>(null)
-
-    useEffect(() => {
-        if (state.message === "Success") {
-            setIsPlanCreated(true)
-            setFeature(null)
-        }
-    }, [state.message])
-
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
@@ -39,15 +26,14 @@ const CreatePlan = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
-            console.log(resonse)
-
+            setIsPlanCreated(true)
+            setFeature(null)
         } catch (error) {
-            console.log(error)
+            setIsPlanCreated(false)
+            throw new Error("Something went wrong with backend")
         }
 
     }
-
 
     return (
         <div className="w-3/4 h-fit bg-white flex flex-col justify-between absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] rounded z-10">
