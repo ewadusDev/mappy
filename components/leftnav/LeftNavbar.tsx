@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image";
-import { CiMenuKebab, CiCirclePlus } from "react-icons/ci";
+import { CiMenuKebab, CiCirclePlus, CiCircleRemove } from "react-icons/ci";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,9 @@ import { MapContext } from "@/app/page";
 import axios from "axios";
 
 const LeftNavbar = ({ data }: { data: any }) => {
-    const { selectedData, setSelectedData, setIsDeleted } = useContext(MapContext)
+    const { selectedData, setSelectedData, setIsDeleted, isCreateMapActive, setIsCreateMapActive } = useContext(MapContext)
+    const Icon = isCreateMapActive ? CiCircleRemove : CiCirclePlus;
+    
     const handleSelectList = (data: any) => {
         if (selectedData?.plans.id === data.plans.id) {
             setSelectedData(null);
@@ -32,8 +34,6 @@ const LeftNavbar = ({ data }: { data: any }) => {
         }
         deletePlan()
     }, [])
-
-    console.log(selectedData)
 
     return <nav className="bg-white w-1/4 h-screen text-black shadow-xl rounded-br-xl rounded-tr-xl">
         <div className="p-2.5 flex flex-col justify-between h-full">
@@ -62,7 +62,8 @@ const LeftNavbar = ({ data }: { data: any }) => {
             </ScrollArea>
 
             <div className="flex items-center justify-center">
-                <CiCirclePlus size={65} className="cursor-pointer" />
+
+                <Icon size={65} className="cursor-pointer" onClick={() => setIsCreateMapActive(!isCreateMapActive)} />
             </div>
 
             {/* Profile */}

@@ -8,5 +8,9 @@ export type TypeMapContext = {
     selectedData: any | null
     setSelectedData: React.Dispatch<React.SetStateAction<any>>
     isDeleted: boolean,
-    setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+    setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>,
+    isCreateMapActive: boolean,
+    setIsCreateMapActive: React.Dispatch<React.SetStateAction<boolean>>,
+    isCancel: boolean,
+    setIsCancel: React.Dispatch<React.SetStateAction<boolean>>
 }

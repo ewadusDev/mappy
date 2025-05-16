@@ -21,6 +21,10 @@ export const MapContext = createContext<TypeMapContext>({
   setSelectedData: () => { },
   isDeleted: false,
   setIsDeleted: () => { },
+  isCreateMapActive: false,
+  setIsCreateMapActive: () => { },
+  isCancel: false,
+  setIsCancel: () => { }
 })
 
 export default function Home() {
@@ -29,6 +33,8 @@ export default function Home() {
   const [planList, setPlanList] = useState(null)
   const [selectedData, setSelectedData] = useState(null)
   const [isDeleted, setIsDeleted] = useState(false)
+  const [isCreateMapActive, setIsCreateMapActive] = useState(false)
+  const [isCancel, setIsCancel] = useState(false)
 
 
   useEffect(() => {
@@ -46,7 +52,7 @@ export default function Home() {
 
 
   return (
-    <MapContext value={{ feature, setFeature, isPlanCreated, setIsPlanCreated, selectedData, setSelectedData, isDeleted, setIsDeleted }}>
+    <MapContext value={{ feature, setFeature, isPlanCreated, setIsPlanCreated, selectedData, setSelectedData, isDeleted, setIsDeleted, isCreateMapActive, setIsCreateMapActive, isCancel, setIsCancel }}>
       <main className="flex">
         <LeftNavbar data={planList} />
         <div className="w-screen h-screen relative">

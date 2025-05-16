@@ -77,25 +77,24 @@ function convertWKBHexToGeoJSON(wkbHex: string) {
 }
 
 const MapContent = () => {
-    const { setFeature, isPlanCreated, setIsPlanCreated, selectedData } = useContext(MapContext)
+    const { setFeature, isPlanCreated, setIsPlanCreated, selectedData, isCreateMapActive, isCancel,setIsCancel } = useContext(MapContext)
     const [center, setCenter] = useState<[number, number]>([13.815, 100.559])
     const featureGroupRef = useRef(null);
 
     useEffect(() => {
         const layerFeature = featureGroupRef.current
 
-        if (isPlanCreated) {
+        if (isPlanCreated || isCancel) {
             // Shape ของ polygon
             if (layerFeature) {
                 layerFeature.clearLayers()
                 setFeature(null)
                 setIsPlanCreated(false)
+                setIsCancel(false)
                 return
             }
         }
-    }, [isPlanCreated])
-
-
+    }, [isPlanCreated, isCancel])
 
     const convertedData = useMemo(() => {
         if (!selectedData) return null;
@@ -136,20 +135,22 @@ const MapContent = () => {
     return (
         <MapContainer center={center} zoom={14} className='h-[100vh] w-full z-2'>
 
-            <FeatureGroup ref={featureGroupRef}>
-                <EditControl
-                    {...drawOption}
-                    onCreated={_onCreated}
-                    onEdited={_onEdited}
-                    onDeleted={_onDeleted}
-                />
+            {isCreateMapActive &&
+                <FeatureGroup ref={featureGroupRef}>
+                    <EditControl
+                        {...drawOption}
+                        onCreated={_onCreated}
+                        onEdited={_onEdited}
+                        onDeleted={_onDeleted}
+                    />
 
-            </FeatureGroup>
-
+                </FeatureGroup>
+            }
             <TileLayer
                 url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
                 attribution=''
             />
+
             {convertedData && <Polygon positions={convertedData} />}
 
         </MapContainer>

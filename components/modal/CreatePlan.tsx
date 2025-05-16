@@ -7,8 +7,15 @@ import axios from "axios";
 
 
 const CreatePlan = () => {
-    const { feature, setFeature, setIsPlanCreated } = useContext(MapContext)
+    const { feature, setFeature, setIsPlanCreated,setIsCancel } = useContext(MapContext)
     const fileInputRef = useRef<HTMLInputElement>(null)
+
+    const handleCancelBotton = () => {
+        setFeature(null)
+        setIsPlanCreated(false)
+        setIsCancel(true)
+
+    }
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
@@ -47,7 +54,7 @@ const CreatePlan = () => {
                     <input type="hidden" value={JSON.stringify(feature)} name="plan" />
                 )}
                 <div className="flex justify-between h-16">
-                    <button className="w-full">Cancel</button>
+                    <button className="w-full" onClick={handleCancelBotton}>Cancel</button>
                     <button className="w-full bg-amber-500" type="submit">{"Save"} </button>
                 </div>
             </form >
