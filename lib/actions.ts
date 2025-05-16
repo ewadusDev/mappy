@@ -62,6 +62,12 @@ export const reseedPlansTable = async () => {
         connectionString: process.env.DATABASE_URL,
     });
 
+    const mockData = {
+        "feature_id": 175,
+        "latLng": "{\"type\":\"Polygon\",\"coordinates\":[[[100.560038,13.852997],[100.549048,13.836747],[100.56665,13.832746],[100.5791,13.847914],[100.571286,13.850497],[100.560038,13.852997]]]}",
+        "type": "POLYGON"
+    }
+
     try {
         await client.connect();
         const db = drizzle(client);
@@ -84,10 +90,11 @@ export const reseedPlansTable = async () => {
             `);
 
         //  Insert new data
-        await db.insert(plans).values([{
-            title: "test plan a1",
-            type: "POINT",
-        }])
+        // await db.insert(plans).values([{
+        //     title: "test plan a1",
+        //     type: "POINT",
+        //     geom: mockData.latLng,
+        // }])
         console.log("Seed plans table successfully")
     } catch (error) {
         console.error(error)
@@ -124,10 +131,10 @@ export const reseedAttachmentsTable = async () => {
             `);
 
         //  Insert new data
-        await db.insert(attachments).values([{
-            file_url: "/images/test.jpg",
-            type: "JPG",
-        }])
+        // await db.insert(attachments).values([{
+        //     file_url: "/images/test.jpg",
+        //     type: "JPG",
+        // }])
         console.log("Seed attachments table successfully")
 
     } catch (error) {
@@ -138,7 +145,7 @@ export const reseedAttachmentsTable = async () => {
 export const reseedMinioBucket = async () => {
     const exists = await minioClient.bucketExists(process.env.MINIO_BUCKETNAME)
     const originalFile = "public/righnav/road_img.jpg"
-    const objectFileName = uuidv4() + ".jpg"
+    const objectFileName = "/plan-images/" + uuidv4() + ".jpg"
 
     if (!exists) {
         await minioClient.makeBucket(process.env.MINIO_BUCKETNAME)

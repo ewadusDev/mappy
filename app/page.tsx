@@ -18,7 +18,9 @@ export const MapContext = createContext<TypeMapContext>({
   isPlanCreated: false,
   setIsPlanCreated: () => { },
   selectedData: null,
-  setSelectedData: () => { }
+  setSelectedData: () => { },
+  isDeleted: false,
+  setIsDeleted: () => { },
 })
 
 export default function Home() {
@@ -26,6 +28,7 @@ export default function Home() {
   const [isPlanCreated, setIsPlanCreated] = useState(false)
   const [planList, setPlanList] = useState(null)
   const [selectedData, setSelectedData] = useState(null)
+  const [isDeleted, setIsDeleted] = useState(false)
 
 
   useEffect(() => {
@@ -39,13 +42,13 @@ export default function Home() {
       }
     }
     fetchPlans()
-  }, [feature])
+  }, [feature, isDeleted])
 
 
   return (
-    <MapContext value={{ feature, setFeature, isPlanCreated, setIsPlanCreated, selectedData, setSelectedData }}>
+    <MapContext value={{ feature, setFeature, isPlanCreated, setIsPlanCreated, selectedData, setSelectedData, isDeleted, setIsDeleted }}>
       <main className="flex">
-        <LeftNavbar data={planList}  />
+        <LeftNavbar data={planList} />
         <div className="w-screen h-screen relative">
           {feature !== null && !isPlanCreated && <CreatePlan />}
           <BaseMapContent />

@@ -7,4 +7,6 @@ export type TypeMapContext = {
     setIsPlanCreated: React.Dispatch<React.SetStateAction<boolean>>
     selectedData: any | null
     setSelectedData: React.Dispatch<React.SetStateAction<any>>
+    isDeleted: boolean,
+    setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
 }

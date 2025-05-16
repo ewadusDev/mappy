@@ -122,8 +122,6 @@ const MapContent = () => {
 
     }
 
-
-
     const _onEdited = (e: L.DrawEvents.Edited) => {
         const { layers: { _layers } } = e
         Object.values(_layers).map((layer) => {

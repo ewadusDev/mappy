@@ -21,7 +21,7 @@ const CreatePlan = () => {
         formData.append('geom', feature.latLng)
 
         try {
-            const resonse = await axios.post("http://localhost:3000/api/createplan", formData, {
+            await axios.post("http://localhost:3000/api/createplan", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
