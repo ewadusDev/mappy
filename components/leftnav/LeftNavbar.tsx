@@ -1,11 +1,16 @@
+"use client"
 import Image from "next/image";
 import { CiMenuKebab, CiCirclePlus } from "react-icons/ci";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
+import { useContext } from "react";
+import { MapContext } from "@/app/page";
 
 
-const LeftNavbar = ({ data, setSelectedData }: { data: any, setSelectedData: any }) => {
+const LeftNavbar = ({ data }: { data: any }) => {
+    const { selectedData, setSelectedData } = useContext(MapContext)
+
 
     const handleClick = (data: any) => {
         setSelectedData(data)
@@ -23,9 +28,9 @@ const LeftNavbar = ({ data, setSelectedData }: { data: any, setSelectedData: any
             <h6 className="text-3xl">Your map</h6>
 
             <ScrollArea className="h-2/4 ">
-                {data && data.map((item, index: number) => {
+                {data && data.map((item: any, index: number) => {
                     return (
-                        <div className="flex gap-2 items-center my-2" key={item.plans.id} onClick={() => handleClick(item)}>
+                        <div className={`flex gap-2 items-center my-2 p-2 ${item.plans.id === selectedData.plans.id && 'bg-gray-300'} hover:bg-gray-300   rounded-sm cursor-pointer`} key={item.plans.id} onClick={() => handleClick(item)}>
                             <p className="w-6">{index + 1}</p>
                             <Image src={item?.attachments?.file_url || "/leftnav/default-plan-image.webp"} width={400} height={400} alt="default_plan_image" className="w-16 h-16 object-cover rounded-[6px]" />
                             <p className="basis-2/3 pl-1">{item.plans.title}</p>

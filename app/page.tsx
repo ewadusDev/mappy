@@ -45,7 +45,7 @@ export default function Home() {
   return (
     <MapContext value={{ feature, setFeature, isPlanCreated, setIsPlanCreated, selectedData, setSelectedData }}>
       <main className="flex">
-        <LeftNavbar data={planList} setSelectedData={setSelectedData} />
+        <LeftNavbar data={planList}  />
         <div className="w-screen h-screen relative">
           {feature !== null && !isPlanCreated && <CreatePlan />}
           <BaseMapContent />
