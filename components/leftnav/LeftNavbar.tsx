@@ -5,32 +5,36 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
 
 
-const LeftNavbar = () => {
+const LeftNavbar = ({ data, setSelectedData }: { data: any, setSelectedData: any }) => {
+
+    const handleClick = (data: any) => {
+        setSelectedData(data)
+    }
+
     return <nav className="bg-white w-1/4 h-screen text-black shadow-xl rounded-br-xl rounded-tr-xl">
         <div className="p-2.5 flex flex-col justify-between h-full">
             <div className="flex items-center justify-between">
                 <h1 className="text-6xl font-bold">Mappy</h1>
                 <div className="w-20 h-20 object-cover">
-                    <Image src={"/leftnav/mappy_logo.webp"} alt="logo" width={400} height={400}/>
+                    <Image src={"/leftnav/mappy_logo.webp"} alt="logo" width={400} height={400} />
                 </div>
             </div>
 
             <h6 className="text-3xl">Your map</h6>
 
             <ScrollArea className="h-2/4 ">
-                {Array.from({ length: 10 }, (_, index) => {
+                {data && data.map((item, index: number) => {
                     return (
-                        <div className="flex gap-2 items-center my-2" key={index}>
+                        <div className="flex gap-2 items-center my-2" key={item.plans.id} onClick={() => handleClick(item)}>
                             <p className="w-6">{index + 1}</p>
-                            <Image src={"/leftnav/default-plan-image.webp"} width={400} height={400} alt="default_plan_image" className="w-16 h-16 object-cover rounded-[6px]" />
-                            <p className="basis-2/3 pl-1">Default Plan</p>
+                            <Image src={item?.attachments?.file_url || "/leftnav/default-plan-image.webp"} width={400} height={400} alt="default_plan_image" className="w-16 h-16 object-cover rounded-[6px]" />
+                            <p className="basis-2/3 pl-1">{item.plans.title}</p>
                             <Button variant={"ghost"} size={"icon"}>
                                 <CiMenuKebab />
                             </Button>
                         </div>
                     )
                 })}
-
             </ScrollArea>
 
             <div className="flex items-center justify-center">
@@ -48,12 +52,7 @@ const LeftNavbar = () => {
                     <CiMenuKebab />
                 </Button>
             </div>
-
-
-
         </div>
-
-
     </nav >;
 };
 export default LeftNavbar;

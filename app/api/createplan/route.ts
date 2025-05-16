@@ -23,9 +23,7 @@ export async function POST(req: NextRequest) {
     const geom = formData.get("geom")
     const imageFile = formData.get("imageFile") as File | null;
 
-
     if (!title || !type || !geom) return NextResponse.json({ message: "Invalid data from client" }, { status: 400 });
-
 
     try {
 
@@ -46,7 +44,7 @@ export async function POST(req: NextRequest) {
                 'Content-Type': imageFile.type
             })
 
-            imageUrl = `http://localhost:9000${process.env.MINIO_BUCKETNAME}/${fileName}`;
+            imageUrl = `http://localhost:9000/${process.env.MINIO_BUCKETNAME}${fileName}`;
 
             await db.insert(attachments).values([
                 {

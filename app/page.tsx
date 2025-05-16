@@ -4,27 +4,48 @@ import LeftNavbar from "@/components/leftnav/LeftNavbar";
 import BaseMapContent from "@/components/map/BaseMapContainer";
 import CreatePlan from "@/components/modal/CreatePlan";
 import RightNavbar from "@/components/rightnav/RightNavbar";
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { TypeMapContext } from "@/types/context"
 import { PlanForm } from "@/types/base"
+import axios from "axios";
+
+
 
 
 export const MapContext = createContext<TypeMapContext>({
   feature: null,
   setFeature: () => { },
   isPlanCreated: false,
-  setIsPlanCreated: () => { }
+  setIsPlanCreated: () => { },
+  selectedData: null,
+  setSelectedData: () => { }
 })
 
 export default function Home() {
   const [feature, setFeature] = useState<PlanForm | null>(null)
   const [isPlanCreated, setIsPlanCreated] = useState(false)
+  const [planList, setPlanList] = useState(null)
+  const [selectedData, setSelectedData] = useState(null)
+
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/getallplan")
+        const data = response.data.response
+        setPlanList(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    fetchPlans()
+  }, [feature])
 
 
   return (
-    <MapContext value={{ feature, setFeature, isPlanCreated, setIsPlanCreated }}>
+    <MapContext value={{ feature, setFeature, isPlanCreated, setIsPlanCreated, selectedData, setSelectedData }}>
       <main className="flex">
-        <LeftNavbar />
+        <LeftNavbar data={planList} setSelectedData={setSelectedData} />
         <div className="w-screen h-screen relative">
           {feature !== null && !isPlanCreated && <CreatePlan />}
           <BaseMapContent />
@@ -32,6 +53,5 @@ export default function Home() {
         <RightNavbar />
       </main>
     </MapContext>
-
   );
 }
