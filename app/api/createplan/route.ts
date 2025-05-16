@@ -53,8 +53,6 @@ export async function POST(req: NextRequest) {
                     planId: insertedPlan.id,
                 }
             ])
-
-
         }
 
         return NextResponse.json({ message: 'Uploaded successfully' });
