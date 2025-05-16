@@ -8,8 +8,7 @@ import { useState, createContext, useEffect } from "react";
 import { TypeMapContext } from "@/types/context"
 import { PlanForm } from "@/types/base"
 import axios from "axios";
-
-
+import { basemaps } from "@/data/basemaps";
 
 
 export const MapContext = createContext<TypeMapContext>({
@@ -24,7 +23,9 @@ export const MapContext = createContext<TypeMapContext>({
   isCreateMapActive: false,
   setIsCreateMapActive: () => { },
   isCancel: false,
-  setIsCancel: () => { }
+  setIsCancel: () => { },
+  selectBaseMap: null,
+  setSelectBaseMap: () => { },
 })
 
 export default function Home() {
@@ -35,6 +36,7 @@ export default function Home() {
   const [isDeleted, setIsDeleted] = useState(false)
   const [isCreateMapActive, setIsCreateMapActive] = useState(false)
   const [isCancel, setIsCancel] = useState(false)
+  const [selectBaseMap, setSelectBaseMap] = useState(null)
 
 
   useEffect(() => {
@@ -48,11 +50,13 @@ export default function Home() {
       }
     }
     fetchPlans()
+
+    setSelectBaseMap(basemaps[0].url)
   }, [feature, isDeleted])
 
 
   return (
-    <MapContext value={{ feature, setFeature, isPlanCreated, setIsPlanCreated, selectedData, setSelectedData, isDeleted, setIsDeleted, isCreateMapActive, setIsCreateMapActive, isCancel, setIsCancel }}>
+    <MapContext value={{ feature, setFeature, isPlanCreated, setIsPlanCreated, selectedData, setSelectedData, isDeleted, setIsDeleted, isCreateMapActive, setIsCreateMapActive, isCancel, setIsCancel, selectBaseMap, setSelectBaseMap }}>
       <main className="flex">
         <LeftNavbar data={planList} />
         <div className="w-screen h-screen relative">

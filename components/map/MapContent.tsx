@@ -10,27 +10,7 @@ import wkx from 'wkx';
 
 
 
-const maps = [
-    {
-        name: "OpenStreetMap",
-        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    },
-    {
-        name: "Satellite",
-        url: "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
-    }, {
-        name: "Hybrid",
-        url: "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
-    },
-    {
-        name: "Terrain",
-        url: "https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}"
-    },
-    {
-        name: "Dark",
-        url: "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
-    }
-]
+
 
 const polygon = { "feature_id": 164, "latLng": "{\"type\":\"Polygon\",\"coordinates\":[[[100.567245,13.842747],[100.558147,13.826996],[100.574198,13.825162],[100.582695,13.84108],[100.574799,13.84758],[100.567245,13.842747]]]}", "type": "POLYGON" }
 // Parse the GeoJSON from the string
@@ -77,7 +57,7 @@ function convertWKBHexToGeoJSON(wkbHex: string) {
 }
 
 const MapContent = () => {
-    const { setFeature, isPlanCreated, setIsPlanCreated, selectedData, isCreateMapActive, isCancel,setIsCancel } = useContext(MapContext)
+    const { setFeature, isPlanCreated, setIsPlanCreated, selectedData, isCreateMapActive, isCancel, setIsCancel, selectBaseMap } = useContext(MapContext)
     const [center, setCenter] = useState<[number, number]>([13.815, 100.559])
     const featureGroupRef = useRef(null);
 
@@ -147,7 +127,7 @@ const MapContent = () => {
                 </FeatureGroup>
             }
             <TileLayer
-                url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+                url={selectBaseMap}
                 attribution=''
             />
 

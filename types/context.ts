@@ -12,5 +12,7 @@ export type TypeMapContext = {
     isCreateMapActive: boolean,
     setIsCreateMapActive: React.Dispatch<React.SetStateAction<boolean>>,
     isCancel: boolean,
-    setIsCancel: React.Dispatch<React.SetStateAction<boolean>>
+    setIsCancel: React.Dispatch<React.SetStateAction<boolean>>,
+    selectBaseMap: any | null,
+    setSelectBaseMap: React.Dispatch<React.SetStateAction<any>>
 }

@@ -62,12 +62,7 @@ export const reseedPlansTable = async () => {
         connectionString: process.env.DATABASE_URL,
     });
 
-    const mockData = {
-        "feature_id": 175,
-        "latLng": "{\"type\":\"Polygon\",\"coordinates\":[[[100.560038,13.852997],[100.549048,13.836747],[100.56665,13.832746],[100.5791,13.847914],[100.571286,13.850497],[100.560038,13.852997]]]}",
-        "type": "POLYGON"
-    }
-
+  
     try {
         await client.connect();
         const db = drizzle(client);
