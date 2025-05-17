@@ -42,7 +42,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/getallplan")
+        const response = await axios.get(`/api/getallplan`)
         const data = response.data.response
         setPlanList(data)
       } catch (error) {

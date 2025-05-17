@@ -7,7 +7,7 @@ import axios from "axios";
 
 
 const CreatePlan = () => {
-    const { feature, setFeature, setIsPlanCreated,setIsCancel } = useContext(MapContext)
+    const { feature, setFeature, setIsPlanCreated, setIsCancel } = useContext(MapContext)
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const handleCancelBotton = () => {
@@ -28,7 +28,7 @@ const CreatePlan = () => {
         formData.append('geom', feature.latLng)
 
         try {
-            await axios.post("http://localhost:3000/api/createplan", formData, {
+            await axios.post(`/api/createplan`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

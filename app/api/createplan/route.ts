@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
                 'Content-Type': imageFile.type
             })
 
-            imageUrl = `http://localhost:9000/${process.env.MINIO_BUCKETNAME}${fileName}`;
+            imageUrl = `${process.env.MINIO_PUBLIC_URL}/${process.env.MINIO_BUCKETNAME}${fileName}`;
 
             await db.insert(attachments).values([
                 {

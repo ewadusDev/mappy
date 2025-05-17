@@ -23,7 +23,7 @@ const LeftNavbar = ({ data }: { data: any }) => {
     const handdleDeleteList = useCallback((data: any) => {
         const deletePlan = async () => {
             try {
-                const response = await axios.delete(`http://localhost:3000/api/deleteplan`, {
+                const response = await axios.delete(`/api/deleteplan`, {
                     data
                 })
                 console.log(response)
@@ -34,6 +34,7 @@ const LeftNavbar = ({ data }: { data: any }) => {
         }
         deletePlan()
     }, [])
+
 
     return <nav className="bg-white w-1/4 h-screen text-black shadow-xl rounded-br-xl rounded-tr-xl">
         <div className="p-2.5 flex flex-col justify-between h-full">
