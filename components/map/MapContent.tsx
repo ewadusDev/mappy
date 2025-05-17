@@ -12,8 +12,8 @@ import {
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
-import { MapContext } from "@/app/page";
 import wkx from "wkx";
+import { MapContext } from "./MapContext";
 
 const polygon = {
   feature_id: 164,
@@ -25,7 +25,10 @@ const polygon = {
 const geoJson = JSON.parse(polygon.latLng);
 
 // Convert GeoJSON [lng, lat] to Leaflet [lat, lng]
-const coordinates = geoJson.coordinates[0].map(([lng, lat]) => [lat, lng]);
+const coordinates = geoJson.coordinates[0].map(([lng, lat]: number[]) => [
+  lat,
+  lng,
+]);
 
 const drawOption = {
   position: "topright",
@@ -97,7 +100,10 @@ const MapContent = () => {
       plans: { geom },
     } = selectedData;
     const geoJson = convertWKBHexToGeoJSON(geom);
-    const arrayGeoJson = geoJson.coordinates[0].map(([lng, lat]) => [lat, lng]);
+    const arrayGeoJson = geoJson.coordinates[0].map(([lng, lat]: number[]) => [
+      lat,
+      lng,
+    ]);
     return arrayGeoJson;
   }, [selectedData]);
 

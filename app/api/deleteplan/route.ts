@@ -13,7 +13,7 @@ export const DELETE = async (req: NextRequest) => {
 
   try {
     await minioClient.removeObject(
-      process.env.MINIO_BUCKETNAME,
+      process.env.MINIO_BUCKETNAME as string,
       data.attachments.file_url.split("mappy/")[1],
     );
     await db

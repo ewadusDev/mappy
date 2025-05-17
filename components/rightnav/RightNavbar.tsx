@@ -1,8 +1,9 @@
 "use client";
-import { MapContext } from "@/app/page";
+
 import { basemaps } from "@/data/basemaps";
 import Image from "next/image";
 import { useContext, useState } from "react";
+import { MapContext } from "../map/MapContext";
 
 const RightNavbar = () => {
   const { setSelectBaseMap } = useContext(MapContext);

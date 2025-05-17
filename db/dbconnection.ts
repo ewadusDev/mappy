@@ -12,6 +12,6 @@ export const minioClient = new Minio.Client({
   endPoint: String(process.env.MINIO_ENPOINT),
   port: Number(process.env.MINIO_PORT),
   useSSL: false,
-  accessKey: process.env.MINIO_ACCESSKEY,
-  secretKey: process.env.MINIO_SECREYKEY,
+  accessKey: process.env.MINIO_ACCESS_KEY,
+  secretKey: process.env.MINIO_SECREY_KEY,
 });

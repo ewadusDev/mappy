@@ -5,8 +5,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useCallback, useContext, useState } from "react";
-import { MapContext } from "@/app/page";
 import axios from "axios";
+import { MapContext } from "../map/MapContext";
 
 const LeftNavbar = ({ data }: { data: any }) => {
   const {

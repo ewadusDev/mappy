@@ -30,11 +30,13 @@ export async function POST(req: NextRequest) {
   try {
     const [insertedPlan] = await db
       .insert(plans)
-      .values({
-        title: String(title),
-        type: String(type).toUpperCase() as GEOTYPEENUM,
-        geom: geom,
-      })
+      .values([
+        {
+          title: String(title),
+          type: String(type).toUpperCase() as GEOTYPEENUM,
+          geom: geom as any,
+        },
+      ])
       .returning({ id: plans.id });
 
     if (imageFile && insertedPlan.id) {
@@ -45,12 +47,9 @@ export async function POST(req: NextRequest) {
 
       // upload image to minio
       await minioClient.putObject(
-        process.env.MINIO_BUCKETNAME,
+        process.env.MINIO_BUCKETNAME as string,
         fileName,
         buffer,
-        {
-          "Content-Type": imageFile.type,
-        },
       );
 
       imageUrl = `${process.env.MINIO_PUBLIC_URL}/${process.env.MINIO_BUCKETNAME}${fileName}`;

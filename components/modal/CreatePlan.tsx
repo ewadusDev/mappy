@@ -7,8 +7,8 @@ import React, {
   useState,
 } from "react";
 import UploadBox from "../ui/uploadBox";
-import { MapContext } from "@/app/page";
 import axios from "axios";
+import { MapContext } from "../map/MapContext";
 
 const CreatePlan = () => {
   const { feature, setFeature, setIsPlanCreated, setIsCancel } =
