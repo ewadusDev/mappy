@@ -1,19 +1,17 @@
-
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { Pool } from 'pg'
-import * as Minio from 'minio'
-
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
+import * as Minio from "minio";
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-})
+  connectionString: process.env.DATABASE_URL,
+});
 
-export const db = drizzle(pool)
+export const db = drizzle(pool);
 
 export const minioClient = new Minio.Client({
-    endPoint: String(process.env.MINIO_ENPOINT),
-    port: Number(process.env.MINIO_PORT),
-    useSSL: false,
-    accessKey: process.env.MINIO_ACCESSKEY,
-    secretKey: process.env.MINIO_SECREYKEY,
-})
+  endPoint: String(process.env.MINIO_ENPOINT),
+  port: Number(process.env.MINIO_PORT),
+  useSSL: false,
+  accessKey: process.env.MINIO_ACCESSKEY,
+  secretKey: process.env.MINIO_SECREYKEY,
+});

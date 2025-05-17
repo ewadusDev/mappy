@@ -73,7 +73,7 @@ export default function Home() {
     >
       <main className="flex">
         <LeftNavbar data={planList} />
-        <div className="w-screen h-screen relative">
+        <div className="relative h-screen w-screen">
           {feature !== null && !isPlanCreated && <CreatePlan />}
           <BaseMapContent />
         </div>

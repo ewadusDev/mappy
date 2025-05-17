@@ -10,4 +10,5 @@ MINIO_BUCKETNAME=mappy
 MINIO_PUBLIC_URL=http://localhost:9000
 
 ## For client side
+
 NEXT_PUBLIC_APP_PUBLIC_URL=http://localhost:3000
