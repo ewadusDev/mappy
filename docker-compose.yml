@@ -40,6 +40,26 @@ services:
     volumes:
       - pg4_db:/var/lib/pgadmin
 
+  mappy:
+    image: my-next-app:latest
+    container_name: mappy
+    restart: always
+    depends_on:
+      - postgres
+      - pgadmin
+      - minio
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=postgresql://mappyadmin:mappypassword@postgres:5432/mappy_db
+      - MINIO_PROTOCAL=http
+      - MINIO_ENPOINT=minio
+      - MINIO_PORT=9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_BUCKETNAME=mappy
+      - MINIO_PUBLIC_URL=http://minio:9000
+
 volumes:
   pg_db:
   pg4_db:
