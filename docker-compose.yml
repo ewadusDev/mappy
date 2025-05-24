@@ -41,7 +41,7 @@ services:
       - pg4_db:/var/lib/pgadmin
 
   mappy:
-    image: my-next-app:latest
+    image: ewadus/mappy:1.0.0
     container_name: mappy
     restart: always
     depends_on:
