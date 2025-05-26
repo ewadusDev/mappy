@@ -48,7 +48,7 @@ const LeftNavbar = ({ data }: { data: any }) => {
           <h1 className="text-6xl font-bold">Mappy</h1>
           <div className="h-20 w-20 object-cover">
             <Image
-              src={"/leftnav/mappy_logo.webp"}
+              src={"/mappy-icon.png"}
               alt="logo"
               width={400}
               height={400}
