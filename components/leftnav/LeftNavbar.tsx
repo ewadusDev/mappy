@@ -63,6 +63,7 @@ const LeftNavbar = ({ data }: { data: any }) => {
             data.map((item: any, index: number) => {
               return (
                 <div
+                  id={`plan-${index}`}
                   className={`my-2 flex items-center gap-2 p-2 hover:bg-gray-300 ${selectedData?.plans.id === item.plans.id && "bg-gray-300"} cursor-pointer rounded-sm`}
                   key={item.plans.id}
                   onClick={() => handleSelectList(item)}
@@ -95,6 +96,7 @@ const LeftNavbar = ({ data }: { data: any }) => {
           <Icon
             size={65}
             className="cursor-pointer"
+            id="create"
             onClick={() => setIsCreateMapActive(!isCreateMapActive)}
           />
         </div>

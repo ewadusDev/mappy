@@ -4,7 +4,7 @@ import LeftNavbar from "@/components/leftnav/LeftNavbar";
 import BaseMapContent from "@/components/map/BaseMapContainer";
 import CreatePlan from "@/components/modal/CreatePlan";
 import RightNavbar from "@/components/rightnav/RightNavbar";
-import { useState, createContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { PlanForm } from "@/types/base";
 import axios from "axios";
 import { basemaps } from "@/data/basemaps";

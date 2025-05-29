@@ -25,7 +25,7 @@ const RightNavbar = () => {
             onClick={() => handleClick(map.url)}
           >
             <Image
-              src={"/righnav/satellite_img.jpg"}
+              src={map.img}
               alt="Satellite"
               width={400}
               height={400}
